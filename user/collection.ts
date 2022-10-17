@@ -20,6 +20,7 @@ class UserCollection {
    */
   static async addOne(username: string, password: string): Promise<HydratedDocument<User>> {
     const dateJoined = new Date();
+    // should the user be logged in when they create an account?
 
     const user = new UserModel({username, password, dateJoined});
     await user.save(); // Saves user to MongoDB
@@ -47,7 +48,7 @@ class UserCollection {
   }
 
   /**
-   * Find a user by username (case insensitive).
+   * Find a user by username and password (case insensitive).
    *
    * @param {string} username - The username of the user to find
    * @param {string} password - The password of the user to find

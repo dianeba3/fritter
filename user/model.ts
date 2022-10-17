@@ -3,7 +3,6 @@ import {Schema, model} from 'mongoose';
 
 /**
  * This file defines the properties stored in a User
- * DO NOT implement operations here ---> use collection file
  */
 
 // Type definition for User on the backend
@@ -32,7 +31,7 @@ const UserSchema = new Schema({
   dateJoined: {
     type: Date,
     required: true
-  }
+  },
 });
 
 const UserModel = model<User>('User', UserSchema);

@@ -4,7 +4,6 @@ import type {User} from '../user/model';
 
 /**
  * This file defines the properties stored in a Freet
- * DO NOT implement operations here ---> use collection file
  */
 
 // Type definition for Freet on the backend
@@ -13,7 +12,7 @@ export type Freet = {
   authorId: Types.ObjectId;
   dateCreated: Date;
   content: string;
-  dateModified: Date;
+  dateModified: Date;  
 };
 
 export type PopulatedFreet = {
@@ -49,7 +48,7 @@ const FreetSchema = new Schema<Freet>({
   dateModified: {
     type: Date,
     required: true
-  }
+  },
 });
 
 const FreetModel = model<Freet>('Freet', FreetSchema);
