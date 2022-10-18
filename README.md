@@ -30,147 +30,222 @@ The project is structured as follows:
 
 The following api routes have already been implemented for you :
 
+- ```GET /```
+    - This renders the `index.html` file that will be used to interact with the backend
 
-#### `GET /`
+# Freet
+- ``` GET /api/freets ``` - Get all the freets
+    - Returns
+        - An array of all freets sorted in descending order by date modified
+- ``` GET /api/freets?author=USERNAME ``` - Get freets by author
+    - Returns 
+        - An array of freets created by user with username `author`
+    - Throws 
+        - `400` if `author` is not given
+        - `404` if `author` is not a recognized username of any user
 
-This renders the `index.html` file that will be used to interact with the backend
+- ``` POST /api/freets ``` - Create a new freet
+    - Body 
+        - `content` _{string}_ - The content of the freet
+    - Returns
+        - A success message
+        - A object with the created freet
+    - Throws
+        - `403` if the user is not logged in
+        - `400` If the freet content is empty or a stream of empty spaces
+        - `413` If the freet content is more than 140 characters long
+- ``` DELETE /api/freets/:freetId? ``` - Delete an existing freet
+    - Returns
+        - A success message
+    - Throws 
+        - `403` if the user is not logged in
+        - `403` if the user is not the author of the freet
+        - `404` if the freetId is invalid
+- ```PUT /api/freets/:freetId? ``` - Update an existing freet
+    - Body
+        - `content` _{string}_ - The new content of the freet
+    - Returns
+        - A success message
+        - An object with the updated freet
+    - Throws 
+        - `403` if the user is not logged in
+        - `404` if the freetId is invalid
+        - `403` if the user is not the author of the freet
+        - `400` if the new freet content is empty or a stream of empty spaces
+        - `413` if the new freet content is more than 140 characters long
 
-#### `GET /api/freets` - Get all the freets
+# Users
+-  ```POST /api/users/session``` - Sign in user
+    - Body
+        - `username` _{string}_ - The user's username
+        - `password` _{string}_ - The user's password
+    - Returns 
+        - A success message
+        - An object with user's details (without password)
+    -Throws
+        - `403` if the user is already logged in
+        - `400` if username or password is not in correct format format or missing in the req
+        - `401` if the user login credentials are invalid
+- ```DELETE /api/users/session``` - Sign out user
+    - Returns 
+        - A success message
+    - Throws
+        - `403` if user is not logged in
+- ```POST /api/users``` - Create an new user account
+    - Body
+        - `username` _{string}_ - The user's username
+        - `password` _{string}_ - The user's password
+    - Returns
+        - A success message
+        - An object with the created user's details (without password)
+    - Throws
+        - `403` if there is a user already logged in
+        - `400` if username or password is in the wrong format
+        - `409` if username is already in use
+- ```PUT /api/users``` - Update a user's profile
+    - Body _(no need to add fields that are not being changed)_
+        - `username` _{string}_ - The user's username
+        - `password` _{string}_ - The user's password
+    - Returns
+        - A success message
+        - An object with the update user details (without password)
+    - Throws 
+        - `403` if the user is not logged in
+        - `400` if username or password is in the wrong format
+        - `409` if the username is already in use
+- ```DELETE /api/users``` - Delete user
+    - Returns
+        - A success message
+    - Throws
+        - `403` if the user is not logged in
 
-**Returns**
+# Profile
+- ```POST /api/profile``` - Create an new user profile
+    - Body
+        - `username` _{string}_ - The user profile username
+        - `picture` _{string}_ - The user's profile picture
+        - `bio`  _{string}_ - The user's profile bio 
+    - Returns
+        - A success message
+        - An object with the created user's details
+    - Throws
+        - `403` if the user is not logged in
+        - `409` if username is already in use
+- ```PUT /api/profile/bio/:userId?``` - Update profile bio for given user profile
+    - Body
+        - `newBio` _{string}_ - The new bio for the profile
+    - Returns
+        - A success message
+        - An object with the updated profile
+    - Throws 
+        - `403` if the user is not logged in
+        - `404` if `userId` is not a recognized username of any user
+        - `400` if the new bio content is empty or a stream of empty spaces
+        - `413` if the new bio content is more than 140 characters long
+- ```PUT /api/profile/picture/:userId?``` - Update profile picture
+    - Body
+        - `newPic` _{string}_ - The new pic string for the profile
+    - Returns
+        - A success message
+        - An object with the updated profile
+    - Throws 
+        - `403` if the user is not logged in
+        - `404` if `userId` is not a recognized username of any user
+        - `404` if `newPic` is not found in the database
+        - `400` if the new picture content is empty or a stream of empty spaces
+- ```DELETE /api/profile/:userId?``` - Delete user profile
+    - Returns
+        - A success message
+    - Throws
+        - `403` if the user is not logged in
 
-- An array of all freets sorted in descending order by date modified
+# Freet Interactions
+- ```DELETE /api/freet_interaction/:freet_interactionId``` - Delete an interaction
+    - Returns
+        - A success message
+    - Throws
+        - `403` if the user is not logged in
+        - `404` if `freet_interactionId` does not exist
+- ```POST /api/freet_interaction``` - Create an interaction
+    - Body
+        - `type` _{string}_ - The interaction type
+        - `authorId` _{string}_ - The user profile username
+        - `freetId` _{string}_ - The freet ID
+        - `content`  _{string}_ - If of type 'reply' then the content otherwise empty 
+    - Returns
+        - A success message
+        - An object with the created freet interaction
+    - Throws
+        - `403` if the user is not logged in
+        - `404` if `authorId` is not a recognized username of any user
+        - `404` if `freetId` is invalid
+        - `404` if `type` is not a recognized type of interaction
+        - `413` if the new freet interaction content is more than 140 characters long     
+- ```PUT /api/_freet_interaction/:freet_interactionId? ``` - Update an existing freet interaction
+    - Body
+        - `content` _{string}_ - The new content of the freet interaction
+    - Returns
+        - A success message
+        - An object with the updated freet
+    - Throws 
+        - `403` if the user is not logged in
+        - `404` if the freet_interactionId is invalid
+        - `403` if the user is not the author of the freet
+        - `400` if the new freet interaction content is empty or a stream of empty spaces
+        - `413` if the new freet interaction content is more than 140 characters long
 
-#### `GET /api/freets?author=USERNAME` - Get freets by author
+# Following
+- ```DELETE /api/following/:followingId``` - Delete a following
+    - Returns
+        - A success message
+    - Throws
+        - `403` if the user is not logged in
+        - `404` if `followingId` does not exist
+- ```POST /api/following``` - Create a following
+    - Body
+        - `follower` _{string}_ - userId who is doing the following
+        - `following` _{string}_ - userId who is being followed
+    - Returns
+        - A success message
+        - An object with the created following
+    - Throws
+        - `403` if the user `follower`  is not logged in
+        - `404` if `follower` is not a recognized username of any user
+        - `404` if `following` is not a recognized username of any user
 
-**Returns**
+# Follower Barrier
+- ```DELETE /api/follower_barrier/:fbId``` - Turn off fbState
+    - Returns
+        - A success message
+    - Throws
+        - `403` if the user is not logged in
+        - `404` if `fbId` does not exist
+- ```POST /api/follower_barrier``` - Turn on fbState
+    - Body
+        - `userId` _{string}_ - userId who is turning on fbState
+        - `passcode` _{string}_ - passcode needed to follow a user
+    - Returns
+        - A success message
+        - An object with the created follower barrier
+    - Throws
+        - `403` if the user `userId`  is not logged in
+        - `400` if the new passcode is empty or a stream of empty spaces
+        - `413` if the new passcode is more than 10 characters long
+- Update passcode
+- ```PUT /api/follower_barrier/:fbId? ``` - Update an existing freet interaction
+    - Body
+        - `passcode` _{string}_ - The new passcode
+    - Returns
+        - A success message
+        - An object with the updated follower barrier
+    - Throws 
+        - `403` if the user is not logged in
+        - `404` if the `fbId` invalid
+        - `400` if the new passcode is empty or a stream of empty spaces
+        - `413` if the new passcode is more than 10 characters long
 
-- An array of freets created by user with username `author`
+# Memories
+not sure yet
 
-**Throws**
 
-- `400` if `author` is not given
-- `404` if `author` is not a recognized username of any user
-
-#### `POST /api/freets` - Create a new freet
-
-**Body**
-
-- `content` _{string}_ - The content of the freet
-
-**Returns**
-
-- A success message
-- A object with the created freet
-
-**Throws**
-
-- `403` if the user is not logged in
-- `400` If the freet content is empty or a stream of empty spaces
-- `413` If the freet content is more than 140 characters long
-
-#### `DELETE /api/freets/:freetId?` - Delete an existing freet
-
-**Returns**
-
-- A success message
-
-**Throws**
-
-- `403` if the user is not logged in
-- `403` if the user is not the author of the freet
-- `404` if the freetId is invalid
-
-#### `PUT /api/freets/:freetId?` - Update an existing freet
-
-**Body**
-
-- `content` _{string}_ - The new content of the freet
-
-**Returns**
-
-- A success message
-- An object with the updated freet
-
-**Throws**
-
-- `403` if the user is not logged in
-- `404` if the freetId is invalid
-- `403` if the user is not the author of the freet
-- `400` if the new freet content is empty or a stream of empty spaces
-- `413` if the new freet content is more than 140 characters long
-
-#### `POST /api/users/session` - Sign in user
-
-**Body**
-
-- `username` _{string}_ - The user's username
-- `password` _{string}_ - The user's password
-
-**Returns**
-
-- A success message
-- An object with user's details (without password)
-
-**Throws**
-
-- `403` if the user is already logged in
-- `400` if username or password is not in correct format format or missing in the req
-- `401` if the user login credentials are invalid
-
-#### `DELETE /api/users/session` - Sign out user
-
-**Returns**
-
-- A success message
-
-**Throws**
-
-- `403` if user is not logged in
-
-#### `POST /api/users` - Create an new user account
-
-**Body**
-
-- `username` _{string}_ - The user's username
-- `password` _{string}_ - The user's password
-
-**Returns**
-
-- A success message
-- An object with the created user's details (without password)
-
-**Throws**
-
-- `403` if there is a user already logged in
-- `400` if username or password is in the wrong format
-- `409` if username is already in use
-
-#### `PUT /api/users` - Update a user's profile
-
-**Body** _(no need to add fields that are not being changed)_
-
-- `username` _{string}_ - The user's username
-- `password` _{string}_ - The user's password
-
-**Returns**
-
-- A success message
-- An object with the update user details (without password)
-
-**Throws**
-
-- `403` if the user is not logged in
-- `400` if username or password is in the wrong format
-- `409` if the username is already in use
-
-#### `DELETE /api/users` - Delete user
-
-**Returns**
-
-- A success message
-
-**Throws**
-
-- `403` if the user is not logged in
 

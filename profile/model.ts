@@ -14,8 +14,7 @@ export type Profile = {
   picture: string; // for now - need to find type for image
   bio: string;
   listFreets: Set<Freet>;  
-  listFollowers: Set<User>;
-  listFollowing: Set<User>; 
+  listLikes: Set<Freet>;
 
 };
 
@@ -45,13 +44,8 @@ const ProfileSchema = new Schema({
     type: Set,
     required: true,
   },
-  // the list of followers the user profile has
-  listFollowers: {
-    type: Set,
-    required: true,
-  },
-  // the list of user the user profile is following
-  listFollowing: {
+  // the list of liked freets
+  listLikes: {
     type: Set,
     required: true,
   },
