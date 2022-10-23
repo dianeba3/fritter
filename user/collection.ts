@@ -20,8 +20,6 @@ class UserCollection {
    */
   static async addOne(username: string, password: string): Promise<HydratedDocument<User>> {
     const dateJoined = new Date();
-    // should the user be logged in when they create an account?
-
     const user = new UserModel({username, password, dateJoined});
     await user.save(); // Saves user to MongoDB
     return user;

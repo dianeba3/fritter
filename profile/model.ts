@@ -10,11 +10,11 @@ import type {Freet} from '../freet/model';
 // Type definition for Profile on the backend
 export type Profile = {
   _id: Types.ObjectId; // MongoDB assigns each object this ID on creation
-  user: User;
+  username: User;
   picture: string; // for now - need to find type for image
   bio: string;
-  listFreets: Set<Freet>;  
-  listLikes: Set<Freet>;
+  // listFreets: Set<Freet>;
+  // listLikes: Set<Freet>;
 
 };
 
@@ -39,16 +39,16 @@ const ProfileSchema = new Schema({
     type: String,
     required: true,
   },
-  // the list of freets associated with the user profile
-  listFreets: {
-    type: Set,
-    required: true,
-  },
-  // the list of liked freets
-  listLikes: {
-    type: Set,
-    required: true,
-  },
+  // // the list of freets associated with the user profile
+  // listFreets: {
+  //   type: Set,
+  //   required: true,
+  // },
+  // // the list of liked freets
+  // listLikes: {
+  //   type: Set,
+  //   required: true,
+  // },
   
 });
 

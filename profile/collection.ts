@@ -18,14 +18,22 @@ class ProfileCollection {
    * @return {Promise<HydratedDocument<Profile>>} - The newly created user
    */
   static async addOne(user: string, picture: string, bio: string): Promise<HydratedDocument<Profile>> {
-    let listFreets = new Set<Freet>();
-    let listFollowers = new Set<User>();
-    let listFollowing = new Set<User>();
-    const user_profile = new ProfileModel({user, picture, bio, listFreets, listFollowers, listFollowing});
+    // let listFreets = new Set<Freet>();
+    const user_profile = new ProfileModel({user, picture, bio});
     await user_profile.save(); // Saves user_profile to MongoDB
-
     return user_profile;
   }
+
+  // need to complete after interactions are done
+  // /**
+  //  * Find all liked Freets by a user by username (case insensitive).
+  //  *
+  //  * @param {string} username - The username of the user to find liked freets by
+  //  * @return {Promise<HydratedDocument<User>> | Promise<null>} - The user with the given username, if any
+  //  */
+  //  static async findOneByUsername(username: string): Promise<HydratedDocument<User>> {
+  //   return UserModel.findOne({username: new RegExp(`^${username.trim()}$`, 'i')});
+  // }
 
   /**
    * Update a picture with the new picture
@@ -34,8 +42,8 @@ class ProfileCollection {
    * @param {string} newPicture - The new content of the freet
    * @return {Promise<HydratedDocument<Profile>>} - The newly updated freet
    */
-   static async updatePicture(user: string, newPicture: string): Promise<HydratedDocument<Profile>> {
-    const profile = await ProfileModel.findOne({user: user});
+   static async updatePicture(userId: Types.ObjectId | string, newPicture: string): Promise<HydratedDocument<Profile>> {
+    const profile = await ProfileModel.findOne({user: userId});
     profile.picture = newPicture;
     await profile.save();
     return profile;
@@ -48,8 +56,8 @@ class ProfileCollection {
    * @param {string} newBio - The new content of the freet
    * @return {Promise<HydratedDocument<Profile>>} - The newly updated freet
    */
-   static async updateBio(user: string, newBio: string): Promise<HydratedDocument<Profile>> {
-    const profile = await ProfileModel.findOne({user: user});
+   static async updateBio(userId: Types.ObjectId | string, newBio: string): Promise<HydratedDocument<Profile>> {
+    const profile = await ProfileModel.findOne({user: userId});
     profile.bio = newBio;
     await profile.save();
     return profile;
@@ -61,8 +69,8 @@ class ProfileCollection {
    * @param {string} user - The user profile to delete
    * @return {Promise<Boolean>} - true if the user has been deleted, false otherwise
    */
-   static async deleteOne(user: string): Promise<boolean> {
-    const profile = await ProfileModel.deleteOne({user: user});
+   static async deleteOne(userId: Types.ObjectId | string): Promise<boolean> {
+    const profile = await ProfileModel.deleteOne({user: userId});
     return profile !== null;
   }
 
