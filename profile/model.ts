@@ -1,7 +1,7 @@
 import type {Types} from 'mongoose';
 import {Schema, model} from 'mongoose';
-import type {User} from '../user/model';
-import type {Freet} from '../freet/model';
+import { User } from '../user/model';
+
 
 /**
  * This file defines the properties stored in a Profile
@@ -10,20 +10,27 @@ import type {Freet} from '../freet/model';
 // Type definition for Profile on the backend
 export type Profile = {
   _id: Types.ObjectId; // MongoDB assigns each object this ID on creation
-  username: User;
+  userId: Types.ObjectId;
   picture: string; // for now - need to find type for image
   bio: string;
-  // listFreets: Set<Freet>;
-  // listLikes: Set<Freet>;
 
 };
+
+export type PopulatedProfile = {
+  _id: Types.ObjectId; // MongoDB assigns each object this ID on creation
+  userId: User;
+  picture: string; // for now - need to find type for image
+  bio: string;
+
+};
+
 
 // Mongoose schema definition for interfacing with a MongoDB table
 // Profile stored in this table will have these fields, with the
 // type given by the type property, inside MongoDB
 const ProfileSchema = new Schema({
   // The user the profile belongs to
-  user: {
+  userId: {
     // Use Types.ObjectId outside of the schema
     type: Schema.Types.ObjectId,
     required: true,
@@ -39,16 +46,6 @@ const ProfileSchema = new Schema({
     type: String,
     required: true,
   },
-  // // the list of freets associated with the user profile
-  // listFreets: {
-  //   type: Set,
-  //   required: true,
-  // },
-  // // the list of liked freets
-  // listLikes: {
-  //   type: Set,
-  //   required: true,
-  // },
   
 });
 
