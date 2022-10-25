@@ -60,12 +60,12 @@ router.post(
     async (req: Request, res: Response) => {
       const userId = (req.session.userId as string) ?? ""; // Will not be an empty string since its validated in isUserLoggedIn
       await ProfileCollection.deleteOne(userId);
-      req.session.userId = undefined;
+      // req.session.userId = undefined;
       res.status(200).json({
         message: "Your profile has been deleted successfully.",
       });
     }
-  );
+);
 
 /**
  * Update a user's profile bio or picture.

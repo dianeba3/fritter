@@ -129,7 +129,7 @@ The following api routes have already been implemented for you :
         - A success message
         - An object with the created user's details
     - Throws
-        - `403` if the user is not logged in
+        - `403` if the user is not logged in 
         - `409` if username is already in use
 - ```PUT /api/profile/bio/:userId?``` - Update profile bio for given user profile
     - Body
@@ -160,13 +160,13 @@ The following api routes have already been implemented for you :
         - `403` if the user is not logged in
 
 # Freet Interactions
-- ```DELETE /api/freet_interaction/:freet_interactionId``` - Delete an interaction
+- ```DELETE /api/freet_interaction/:interactionId``` - Delete an interaction
     - Returns
         - A success message
     - Throws
-        - `403` if the user is not logged in
-        - `404` if `freet_interactionId` does not exist
-- ```POST /api/freet_interaction``` - Create an interaction
+        - `403` If the user is not logged in or is not the author of the interaction
+        - `404` if `interactionId` does not exist
+- ```POST /api/interaction``` - Create an interaction
     - Body
         - `type` _{string}_ - The interaction type
         - `authorId` _{string}_ - The user profile username
@@ -181,7 +181,7 @@ The following api routes have already been implemented for you :
         - `404` if `freetId` is invalid
         - `404` if `type` is not a recognized type of interaction
         - `413` if the new freet interaction content is more than 140 characters long     
-- ```PUT /api/_freet_interaction/:freet_interactionId? ``` - Update an existing freet interaction
+- ```PUT /api/interaction/:interactionId? ``` - Update an existing freet interaction
     - Body
         - `content` _{string}_ - The new content of the freet interaction
     - Returns

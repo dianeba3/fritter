@@ -1,7 +1,5 @@
 import type {Request, Response, NextFunction} from 'express';
-import {Types} from 'mongoose';
 import ProfileCollection from './collection';
-import UserCollection from '../user/collection';
 
 /**
  * Checks if the content of the NEW BIO in req.body is no more than 140 characters

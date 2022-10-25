@@ -13,7 +13,7 @@ type InteractionResponse = {
 /**
  *
  * @param {HydratedDocument<Interaction>} interaction - A user object
- * @returns {InteractionResponse} - The user object without the password
+ * @returns {InteractionResponse} - The user object
  */
  const constructInteractionResponse = (interaction: HydratedDocument<Interaction>): InteractionResponse => {
     const interactionCopy: PopulatedInteraction = {
@@ -21,8 +21,8 @@ type InteractionResponse = {
         versionKey: false // Cosmetics; prevents returning of __v property
       })
     };
-    const {username} = interactionCopy.userId;
-    delete interactionCopy.userId;
+    const {username} = interactionCopy.authorId;
+    delete interactionCopy.authorId;
     return {
       ...interactionCopy,
       _id: interactionCopy._id.toString(),

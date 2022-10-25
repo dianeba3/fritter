@@ -5,6 +5,7 @@ import UserCollection from "./collection";
 import * as userValidator from "../user/middleware";
 import * as util from "./util";
 import ProfileCollection from "../profile/collection";
+import InteractionCollection from "../interaction/collection";
 
 const router = express.Router();
 
@@ -140,6 +141,13 @@ router.delete(
   [userValidator.isUserLoggedIn],
   async (req: Request, res: Response) => {
     const userId = (req.session.userId as string) ?? ""; // Will not be an empty string since its validated in isUserLoggedIn
+    const freets = await FreetCollection.findAllByUserId(userId);
+    // console.log("START HERE");
+    // console.log(freets);
+    for (let i=0; i<freets.length; i++){
+      // console.log(freets[i]._id);
+      await InteractionCollection.deleteMany(freets[i]._id);
+    }
     await UserCollection.deleteOne(userId);
     await FreetCollection.deleteMany(userId);
     await ProfileCollection.deleteOne(userId);

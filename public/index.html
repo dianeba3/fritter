@@ -7,9 +7,8 @@
     <script src="/scripts/freet.js"></script>
     <script src="/scripts/user.js"></script>
     <script src="/scripts/profile.js"></script>
-    <script src="/scripts/index.js"></script>
     <script src="/scripts/interaction.js"></script>
-
+    <script src="/scripts/index.js"></script>
   </head>
 
   <body>
@@ -37,6 +36,42 @@
               <input id="content" name="content" />
             </div>
             <input type="submit" value="Create Interaction" />
+          </form>
+
+          <form id="edit-interaction">
+            <h3>Edit Interaction (reply)</h3>
+            <div>
+              <label for="id">Interaction ID:</label>
+              <input id="id" name="id" />
+            </div>
+            <div>
+              <label for="content">New Reply Content:</label>
+              <textarea id="content" name="content"></textarea>
+            </div>
+            <input type="submit" value="Edit Interaction" />
+          </form>
+
+          <form id="delete-interaction">
+            <h3>Delete Interaction</h3>
+            <div>
+              <label for="id">Interaction ID:</label>
+              <input id="id" name="id" />
+            </div>
+            <input type="submit" value="Delete Interaction" />
+          </form>
+
+          <form id="view-all-interactions">
+            <h3>View All Interactions</h3>
+            <input type="submit" value="View All Interactions" />
+          </form>
+
+          <form id="view-interactions-by-freetId">
+            <h3>View Interactions By FreetId</h3>
+            <div>
+              <label for="freetId">FreetId:</label>
+              <input id="freetId" name="freetId" />
+            </div>
+            <input type="submit" value="View Interactions By FreetId" />
           </form>
 
           <h2>User:</h2>

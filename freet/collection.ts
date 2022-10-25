@@ -53,13 +53,24 @@ class FreetCollection {
   }
 
   /**
-   * Get all the freets in by given author
+   * Get all the freets in by given username
    *
    * @param {string} username - The username of author of the freets
    * @return {Promise<HydratedDocument<Freet>[]>} - An array of all of the freets
    */
   static async findAllByUsername(username: string): Promise<Array<HydratedDocument<Freet>>> {
     const author = await UserCollection.findOneByUsername(username);
+    return FreetModel.find({authorId: author._id}).populate('authorId');
+  }
+
+  /**
+   * Get all the freets in by given userId
+   *
+   * @param {string} userId - The username of author of the freets
+   * @return {Promise<HydratedDocument<Freet>[]>} - An array of all of the freets
+   */
+   static async findAllByUserId(userId: string): Promise<Array<HydratedDocument<Freet>>> {
+    const author = await UserCollection.findOneByUserId(userId);
     return FreetModel.find({authorId: author._id}).populate('authorId');
   }
 

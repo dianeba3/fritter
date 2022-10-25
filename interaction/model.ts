@@ -8,16 +8,16 @@ import { User } from '../user/model';
 
 // Type definition for Interaction on the backend
 export type Interaction = {
-    _id: Types.ObjectId; // MongoDB assigns each object this ID on creation
-    userId: Types.ObjectId;
-    type: string; 
-    freetId: string;
-    content: string;
+  _id: Types.ObjectId; // MongoDB assigns each object this ID on creation
+  authorId: Types.ObjectId;
+  type: string; 
+  freetId: string;
+  content: string;
 };
   
 export type PopulatedInteraction = {
   _id: Types.ObjectId; // MongoDB assigns each object this ID on creation
-  userId: User;
+  authorId: User;
   type: string; 
   freetId: string;
   content: string;
@@ -25,7 +25,7 @@ export type PopulatedInteraction = {
 
 const InteractionShema = new Schema({
   // The user the profile belongs to
-  userId: {
+  authorId: {
     // Use Types.ObjectId outside of the schema
     type: Schema.Types.ObjectId,
     required: true,

@@ -1,6 +1,7 @@
 import type {NextFunction, Request, Response} from 'express';
 import express from 'express';
 import FreetCollection from './collection';
+import InteractionCollection from '../interaction/collection';
 import * as userValidator from '../user/middleware';
 import * as freetValidator from '../freet/middleware';
 import * as util from './util';
@@ -94,6 +95,10 @@ router.delete(
     freetValidator.isValidFreetModifier
   ],
   async (req: Request, res: Response) => {
+    const freets = await InteractionCollection.findAllByFreetId(req.params.freetId);
+    for (let i=0; i<freets.length; i++){
+      await InteractionCollection.deleteMany(freets[i].freetId);
+    }
     await FreetCollection.deleteOne(req.params.freetId);
     res.status(200).json({
       message: 'Your freet was deleted successfully.'

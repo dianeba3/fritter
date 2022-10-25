@@ -23,9 +23,9 @@ class ProfileCollection {
   }
 
   /**
-   * Find a user by userId (case insensitive).
+   * Find a profile by userId (case insensitive).
    *
-   * @param {string} userId - The userId of the user to find
+   * @param {string} userId - The userId of the profile to find
    * @return {Promise<HydratedDocument<Profile>> | Promise<null>} - The user with the given userId, if any
    */
   static async findOneByUserID(userId: Types.ObjectId | string): Promise<HydratedDocument<Profile>> {
