@@ -55,6 +55,7 @@ const router = express.Router();
  * @throws {403} - if the user is not logged in or if the user does not have a follower barrier
  * @throws {400} - If password is  not in the correct format,
  *                 or missing in the req
+ * @throws {413} - if the new passcode is more than 15 characters long
  * @throws {404} - if user is not a recognized username of any user
  */
  router.put(

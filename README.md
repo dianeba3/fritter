@@ -222,13 +222,16 @@ The following api routes have already been implemented for you :
         - `403` if the user is trying to unfollow itself
         - `404` if follower/user is not a recognized username of any user
 - ```POST /api/following``` - Create a following
-    - Body
+    - Body _(no need to add fields that may not be needed like the passocde)_
         - `following` _{string}_ - username who is being followed
+        - `passcode`  _{string}_ - passcode needed to follow if user has a follower barrier 
     - Returns
         - A success message
         - An object with the created following
     - Throws
         - `403` if the user is not logged in
+        - `400` if the user has a follower barrier and is missing the passcode
+        - `401` if the user has a follower barrier and entered the wrong credentials
         - `403` if the user is trying to follow itself
         - `403` if the user already follows `following`
         - `404` if `following` is not a recognized username of any user
@@ -265,7 +268,7 @@ The following api routes have already been implemented for you :
         - A success message
     - Throws
         - `403` if the user is not logged in or the follower barrier does not exist
-- ```PUT /api/follower_barrier/:username? ``` - Update passcode
+- ```PUT /api/follower_barrier ``` - Update passcode
     - Body
         - `passcode` _{string}_ - The new passcode
     - Returns

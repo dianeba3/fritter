@@ -71,6 +71,8 @@ const router = express.Router();
  * @param {string} following - The user being followed 
  * @return {FollowingResponse} - An object with user's details 
  * @throws {403} if the user is not logged in
+ * @throws {400} if the user has a follower barrier and is missing the passcode
+ * @throws {401} if the user has a follower barrier and entered the wrong credentials
  * @throws {403} if the user is trying to follow itself
  * @throws {403} if the user already follows `following`
  * @throws {404} if following/user is not a recognized username of any user
