@@ -51,7 +51,7 @@ const isValidPasscode = async (req: Request, res: Response, next: NextFunction) 
 
 
 /**
- * Checks that the user does not already have a follower barrier
+ * Checks that the user does already have a follower barrier
  */
  const doesAlreadyExist = async (req: Request, res: Response, next: NextFunction) => {
     const user_Id = (req.session.userId as string) ?? ""; // Will not be an empty string since its validated in isUserLoggedIn

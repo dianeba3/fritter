@@ -33,8 +33,7 @@ import * as util from "./util";
             username: user, 
             following: following
         });
-        // console.log("start here");
-        // console.log((await followingList).map(util.constructFollowingResponse));
+        
         return followingList
     }
 

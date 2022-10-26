@@ -6,7 +6,10 @@ import UserCollection from "../user/collection";
 import * as userValidator from "../user/middleware";
 import * as interactionValidator from "../interaction/middleware";
 import * as followingValidator from "./middleware";
-import FollowingModel from "./model";
+// import * as followerBarrierValidator from "../follower_barrier/middleware";
+
+// import FollowingModel from "./model";
+// import FollowerBarrierModel from "../follower_barrier/model";
 
 const router = express.Router();
 
@@ -80,11 +83,15 @@ const router = express.Router();
         followingValidator.isUserExistsBody,
         followingValidator.followerNotSameAsUser,
         followingValidator.isAlreadyFollowed,
+        followingValidator.validPasscodeForBarrier,
 
     ],
     async (req: Request, res: Response) => {
       const userFollower = (req.session.userId as string) ?? ""; // Will not be an empty string since its validated in isUserLoggedIn
       const user = await UserCollection.findOneByUserId(userFollower);
+
+    //   const barrierExist = await FollowerBarrierModel.find({username: user.username});
+
       const newFollow = await FollowingCollection.addOne(
         user.username as string,
         req.body.following as string,

@@ -1,4 +1,5 @@
 import type {Request, Response, NextFunction} from 'express';
+import FollowerBarrierModel from '../follower_barrier/model';
 import UserCollection from '../user/collection';
 import FollowingCollection from './collection';
 
@@ -121,9 +122,7 @@ import FollowingCollection from './collection';
  const isAlreadyFollowedToUnfollowParams = async (req: Request, res: Response, next: NextFunction) => {
     const user = await UserCollection.findOneByUserId(req.session.userId);
     const followExists = await FollowingCollection.findOneByBoth(user.username as string, req.params.following as string);
-    console.log("yee");
-    console.log(followExists[0]._id);
-
+    
     if (!followExists) {
       res.status(403).json({
         error: 'You cannot unfollow a user you do not follow'
@@ -134,6 +133,37 @@ import FollowingCollection from './collection';
     next();
 };
 
+/**
+ * Checks if the reply interaction is nonempty and no more than 140 chars long
+ */
+ const validPasscodeForBarrier = async (req: Request, res: Response, next: NextFunction) => {
+  const userFollower = (req.session.userId as string) ?? ""; // Will not be an empty string since its validated in isUserLoggedIn
+  const user = await UserCollection.findOneByUserId(userFollower);
+  const barrierExist = await FollowerBarrierModel.find({username: user.username});
+
+  if (barrierExist.length >=1 ){ //user has a follower barrier so they need a valid passcode
+    const passcode = req.body.passcode as string;
+
+    if (!passcode){
+      res.status(400).json({error: `Missing passcode to follow`});
+      return;
+    }
+
+    const barrier = await FollowerBarrierModel.findOne({username: user.username, passcode: passcode});
+    
+    if (barrier) { //found a valid follower barrier with that username and passcode
+      next();
+    } else {
+      res.status(401).json({error: 'Invalid passcode credentials provided.'});
+    }
+  }else{
+    next();
+  }
+
+  
+
+};
+
 
 export {
     isUserExistsBody,
@@ -142,5 +172,6 @@ export {
     isAlreadyFollowed,
     isAlreadyFollowedToUnfollow,
     isAlreadyFollowedToUnfollowParams,
-    followerNotSameAsUserParams
+    followerNotSameAsUserParams,
+    validPasscodeForBarrier
 };

@@ -39,7 +39,6 @@ import ProfileCollection from './collection';
  */
  const isUsernameNotAlreadyInUse = async (req: Request, res: Response, next: NextFunction) => {
   const user = await ProfileCollection.findOneByUserID(req.session.userId);
-  console.log(user)
 
   // if a profile doensn't exist under that User then it can go ahead and be created
   if (!user) {

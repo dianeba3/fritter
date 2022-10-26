@@ -142,10 +142,8 @@ router.delete(
   async (req: Request, res: Response) => {
     const userId = (req.session.userId as string) ?? ""; // Will not be an empty string since its validated in isUserLoggedIn
     const freets = await FreetCollection.findAllByUserId(userId);
-    // console.log("START HERE");
-    // console.log(freets);
+    
     for (let i=0; i<freets.length; i++){
-      // console.log(freets[i]._id);
       await InteractionCollection.deleteMany(freets[i]._id);
     }
     await UserCollection.deleteOne(userId);

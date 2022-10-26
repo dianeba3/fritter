@@ -196,10 +196,6 @@ const isValidFreetModifier = async (req: Request, res: Response, next: NextFunct
             userId: req.session.userId,
             freetId: req.body.freetId
         }).populate('authorId');
-    
-        console.log("interactions by user on freet");
-        console.log(interactions)
-    
         const numInteractions = interactions.length;
     
         if (numInteractions >= 1) {
