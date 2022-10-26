@@ -9,6 +9,7 @@
     <script src="/scripts/profile.js"></script>
     <script src="/scripts/interaction.js"></script>
     <script src="/scripts/following.js"></script>
+    <script src="/scripts/followerBarrier.js"></script>
     <script src="/scripts/index.js"></script>
   </head>
 
@@ -32,6 +33,30 @@
               <input id="password" name="password" />
             </div>
             <input type="submit" value="Sign In" />
+          </form>
+
+          <h2>Follower Barrier:</h2>
+          <form id="create-followerBarrier">
+            <h3>Create a Follower Barrier</h3>
+            <div>
+              <label for="passcode">Create Passcode:</label>
+              <input id="passcode" name="passcode"/>
+            </div>
+            <input type="submit" value="Create Follower Barrier" />
+          </form>
+
+          <form id="change-passcode">
+            <h3>Change Passcode</h3>
+            <div>
+              <label for="passcode">New Passcode:</label>
+              <input id="passcode" name="passcode" />
+            </div>
+            <input type="submit" value="Change Passcode" />
+          </form>
+
+          <form id="delete-followerBarrier">
+            <h3>Delete Follower Barrier</h3>
+            <input type="submit" value="Delete Follower Barrier" />
           </form>
 
           <h2>Following:</h2>

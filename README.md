@@ -211,46 +211,61 @@ The following api routes have already been implemented for you :
         - `403` if the user is not the author of the freet
         - `400` if the new freet interaction content is empty or a stream of empty spaces
         - `413` if the new freet interaction content is more than 140 characters long
-        
+
 # Following
-- ```DELETE /api/following/:followingId``` - Delete a following
+- ```DELETE /api/following/:following?``` - Delete a following
     - Returns
         - A success message
     - Throws
-        - `403` if the user is not logged in
-        - `404` if `followingId` does not exist
+        - `403` if the user is not logged in 
+        - `403` if the user does not already follow `follower`
+        - `403` if the user is trying to unfollow itself
+        - `404` if follower/user is not a recognized username of any user
 - ```POST /api/following``` - Create a following
     - Body
-        - `follower` _{string}_ - userId who is doing the following
-        - `following` _{string}_ - userId who is being followed
+        - `following` _{string}_ - username who is being followed
     - Returns
         - A success message
         - An object with the created following
     - Throws
-        - `403` if the user `follower`  is not logged in
-        - `404` if `follower` is not a recognized username of any user
+        - `403` if the user is not logged in
+        - `403` if the user is trying to follow itself
+        - `403` if the user already follows `following`
         - `404` if `following` is not a recognized username of any user
-
-# Follower Barrier
-- ```DELETE /api/follower_barrier/:fbId``` - Turn off fbState
+        - `404` if user is not a recognized username of any user
+- ```GET /api/following/following``` - Get all the users you are following
     - Returns
         - A success message
+        - A list of all the users you follow
     - Throws
-        - `403` if the user is not logged in
-        - `404` if `fbId` does not exist
+        - `403` if the user is not logged in 
+        - `404` if user is not a recognized username of any user
+- ```GET /api/following/followers``` - Get all the users that you follow
+    - Returns
+        - A success message
+        -  A list of all the users following you
+    - Throws
+        - `403` if the user is not logged in 
+        - `404` if user is not a recognized username of any user
+# Follower Barrier
 - ```POST /api/follower_barrier``` - Turn on fbState
     - Body
-        - `userId` _{string}_ - userId who is turning on fbState
+        - `username` _{string}_ - username who is turning on fbState
         - `passcode` _{string}_ - passcode needed to follow a user
     - Returns
         - A success message
         - An object with the created follower barrier
     - Throws
-        - `403` if the user `userId`  is not logged in
+        - `403` if the user `username` is not logged in
+        - `404` if user is not a recognized username of any user
         - `400` if the new passcode is empty or a stream of empty spaces
-        - `413` if the new passcode is more than 10 characters long
-- Update passcode
-- ```PUT /api/follower_barrier/:fbId? ``` - Update an existing freet interaction
+        - `413` if the new passcode is more than 15 characters long
+- ```DELETE /api/follower_barrier``` - Turn off fbState
+    - Returns
+        - A success message
+    - Throws
+        - `403` if the user is not logged in or the follower barrier does not exist
+- ```PUT /api/follower_barrier/:username? ``` - Update passcode
     - Body
         - `passcode` _{string}_ - The new passcode
     - Returns
@@ -258,9 +273,9 @@ The following api routes have already been implemented for you :
         - An object with the updated follower barrier
     - Throws 
         - `403` if the user is not logged in
-        - `404` if the `fbId` invalid
+        - `404` if user is not a recognized username of any user
         - `400` if the new passcode is empty or a stream of empty spaces
-        - `413` if the new passcode is more than 10 characters long
+        - `413` if the new passcode is more than 15 characters long
 
 
 

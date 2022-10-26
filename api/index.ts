@@ -14,6 +14,7 @@ import {freetRouter} from '../freet/router';
 import {profileRouter} from '../profile/router';
 import {interactionRouter} from '../interaction/router';
 import {followingRouter} from '../following/router';
+import {followerBarrierRouter} from '../follower_barrier/router';
 
 // Load environmental variables
 dotenv.config({});
@@ -82,6 +83,8 @@ app.use('/api/freets', freetRouter);
 app.use('/api/profile', profileRouter);
 app.use('/api/interaction', interactionRouter);
 app.use('/api/following', followingRouter);
+app.use('/api/followerBarrier', followerBarrierRouter);
+
 
 
 // Catch all the other routes and display error message

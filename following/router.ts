@@ -6,15 +6,18 @@ import UserCollection from "../user/collection";
 import * as userValidator from "../user/middleware";
 import * as interactionValidator from "../interaction/middleware";
 import * as followingValidator from "./middleware";
+import FollowingModel from "./model";
 
 const router = express.Router();
 
 /**
  * Get all the users you are following
  *
- * @name GET /api/interaction/following
+ * @name GET /api/following/following
  *
  * @return {FollowingResponse[]} - A list of all the users you follow
+ * @throws {403} if the user is not logged in
+ * @throws {404} if user is not a recognized username of any user
  */
  router.get(
     '/following',
@@ -36,7 +39,7 @@ const router = express.Router();
 /**
  * Get all the users that are following you
  *
- * @name GET /api/interaction/followers
+ * @name GET /api/following/followers
  *
  * @return {FollowingResponse[]} - A list of all the users following you
  */
@@ -62,12 +65,12 @@ const router = express.Router();
  *
  * @name POST /api/following
  *
- * @param {string} follower - The user being followed 
+ * @param {string} following - The user being followed 
  * @return {FollowingResponse} - An object with user's details 
  * @throws {403} if the user is not logged in
  * @throws {403} if the user is trying to follow itself
- * @throws {403} if the user already follows `follower`
- * @throws {404} if follower/user is not a recognized username of any user
+ * @throws {403} if the user already follows `following`
+ * @throws {404} if following/user is not a recognized username of any user
  */
  router.post(
     "/",
@@ -115,11 +118,11 @@ const router = express.Router();
       followingValidator.isAlreadyFollowedToUnfollowParams,
     ],
     async (req: Request, res: Response) => {
-      const userFollower = (req.session.userId as string) ?? ""; // Will not be an empty string since its validated in isUserLoggedIn
-      console.log("what");
-      console.log(req.params.following as string);
+      const user_id = (req.session.userId as string) ?? ""; // Will not be an empty string since its validated in isUserLoggedIn
+      const user = await UserCollection.findOneByUserId(user_id);
       const unfollow = req.params.following as string;
-      await FollowingCollection.deleteOne(userFollower, unfollow);
+
+      await FollowingCollection.deleteOne(user.username as string, unfollow);
       res.status(200).json({
         message: 'Your following was deleted successfully.'
       });

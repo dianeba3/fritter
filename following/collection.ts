@@ -68,9 +68,6 @@ import * as util from "./util";
      * @return {Promise<Boolean>} - true if the following has been deleted, false otherwise
      */
     static async deleteOne(user: string, unfollow: string): Promise<boolean> {
-        const toDelete = await FollowingCollection.findOneByBoth(user, unfollow);
-        console.log("hello");
-        console.log(toDelete);
         const follow = await FollowingModel.deleteOne({username: user, following: unfollow});
         return follow !== null;
     }

@@ -122,7 +122,7 @@ import FollowingCollection from './collection';
     const user = await UserCollection.findOneByUserId(req.session.userId);
     const followExists = await FollowingCollection.findOneByBoth(user.username as string, req.params.following as string);
     console.log("yee");
-    console.log(followExists);
+    console.log(followExists[0]._id);
 
     if (!followExists) {
       res.status(403).json({

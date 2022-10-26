@@ -29,6 +29,9 @@ function showResponse(response) {
 // Map form (by id) to the function that should be called on submit
 const formsAndHandlers = {
   "create-following": createFollowing,
+  "delete-followerBarrier": deleteFollowerBarrier,
+  "create-followerBarrier": createFollowerBarrier,
+  "change-passcode": changePasscode,
   "delete-following": deleteFollowing,
   "view-following": viewAllFollowing,
   "view-followers": viewAllFollowers,
