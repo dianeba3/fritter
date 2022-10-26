@@ -1,6 +1,7 @@
 import type { HydratedDocument, Types } from "mongoose";
 import type { Following } from "./model";
 import FollowingModel from "./model";
+import * as util from "./util";
 
 /**
  * This file contains a class with functionality to interact with profiles stored
@@ -25,26 +26,54 @@ import FollowingModel from "./model";
      *
      * @param {string} username - The username of the following
      * @param {string} following - The following
-     * @return {Promise<HydratedDocument<Following>[]>} - An array of all of the freets
+     * @return {Promise<HydratedDocument<Following>[]>} - An array of all of the users
      */
      static async findOneByBoth(user: string, following: string): Promise<Array<HydratedDocument<Following>>>  {
-        return FollowingModel.find({
+        const followingList = FollowingModel.find({
             username: user, 
             following: following
         });
+        // console.log("start here");
+        // console.log((await followingList).map(util.constructFollowingResponse));
+        return followingList
     }
 
-    // /**
-    //  * Delete a following - user is unfollowing `follower`.
-    //  *
-    //  * @param {string} username - The username of the following
-    //  * @param {string} following - The following
-    //  * @return {Promise<Boolean>} - true if the following has been deleted, false otherwise
-    //  */
-    // static async deleteOne(user: string, following: string): Promise<boolean> {
-    //     const freet = await FreetModel.deleteOne({_id: freetId});
-    //     return freet !== null;
-    // }
+    /**
+     * Find all the users you are following
+     *
+     * @param {string} username - The username of the following
+     * @return {Promise<HydratedDocument<Following>[]>} - An array of all of the users
+     */
+     static async findFollowing(user: string): Promise<Array<HydratedDocument<Following>>>  {
+        const followingList = FollowingModel.find({username: user});
+        return followingList;
+    }
+
+    /**
+     * Find all the users following you
+     *
+     * @param {string} username - The username of the following
+     * @return {Promise<HydratedDocument<Following>[]>} - An array of all of the users
+     */
+     static async findFollowers(user: string): Promise<Array<HydratedDocument<Following>>>  {
+        const followingList = FollowingModel.find({following: user});
+        return followingList;
+    }
+
+    /**
+     * Delete a following - user is unfollowing `follower`.
+     *
+     * @param {string} username - The username of the following
+     * @param {string} unfollow - The following
+     * @return {Promise<Boolean>} - true if the following has been deleted, false otherwise
+     */
+    static async deleteOne(user: string, unfollow: string): Promise<boolean> {
+        const toDelete = await FollowingCollection.findOneByBoth(user, unfollow);
+        console.log("hello");
+        console.log(toDelete);
+        const follow = await FollowingModel.deleteOne({username: user, following: unfollow});
+        return follow !== null;
+    }
 
 }
 

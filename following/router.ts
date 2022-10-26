@@ -9,6 +9,53 @@ import * as followingValidator from "./middleware";
 
 const router = express.Router();
 
+/**
+ * Get all the users you are following
+ *
+ * @name GET /api/interaction/following
+ *
+ * @return {FollowingResponse[]} - A list of all the users you follow
+ */
+ router.get(
+    '/following',
+    [
+        userValidator.isUserLoggedIn,
+        interactionValidator.isAuthorExists,
+    ],
+    async (req: Request, res: Response) => {
+      const userFollower = (req.session.userId as string) ?? ""; // Will not be an empty string since its validated in isUserLoggedIn
+      const user = await UserCollection.findOneByUserId(userFollower);
+      const allFollowing = await FollowingCollection.findFollowing(user.username as string);
+      const response = allFollowing.map(util.constructFollowingResponse);
+      res.status(200).json({
+        message: `Users you follow:`,
+        following: response,
+      });
+});
+
+/**
+ * Get all the users that are following you
+ *
+ * @name GET /api/interaction/followers
+ *
+ * @return {FollowingResponse[]} - A list of all the users following you
+ */
+ router.get(
+    '/followers',
+    [
+        userValidator.isUserLoggedIn,
+        interactionValidator.isAuthorExists,
+    ],
+    async (req: Request, res: Response) => {
+      const userFollower = (req.session.userId as string) ?? ""; // Will not be an empty string since its validated in isUserLoggedIn
+      const user = await UserCollection.findOneByUserId(userFollower);
+      const allFollowing = await FollowingCollection.findFollowers(user.username as string);
+      const response = allFollowing.map(util.constructFollowingResponse);
+      res.status(200).json({
+        message: `Your list of followers:`,
+        following: response,
+      });
+});
 
 /**
  * Create an new following
@@ -37,7 +84,7 @@ const router = express.Router();
       const user = await UserCollection.findOneByUserId(userFollower);
       const newFollow = await FollowingCollection.addOne(
         user.username as string,
-        req.body.follower as string,
+        req.body.following as string,
       );
   
       res.status(201).json({
@@ -45,6 +92,39 @@ const router = express.Router();
         following: util.constructFollowingResponse(newFollow),
       });
     }
+);
+
+/**
+ * Delete a following
+ *
+ * @name DELETE /api/following/:following
+ *
+ * @return {string} - A success message
+ * @throws {403} - If the user is not logged in 
+ * @throws {403} if the user does not already follow `follower`
+ * @throws {403} if the user is trying to unfollow itself
+ * @throws {404} if follower/user is not a recognized username of any user
+ */
+ router.delete(
+    '/:following?',
+    [
+      userValidator.isUserLoggedIn,
+      followingValidator.followerNotSameAsUserParams,
+      interactionValidator.isAuthorExists,
+      followingValidator.isUserExistsParams,
+      followingValidator.isAlreadyFollowedToUnfollowParams,
+    ],
+    async (req: Request, res: Response) => {
+      const userFollower = (req.session.userId as string) ?? ""; // Will not be an empty string since its validated in isUserLoggedIn
+      console.log("what");
+      console.log(req.params.following as string);
+      const unfollow = req.params.following as string;
+      await FollowingCollection.deleteOne(userFollower, unfollow);
+      res.status(200).json({
+        message: 'Your following was deleted successfully.'
+      });
+    }
+
 );
 
 

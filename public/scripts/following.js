@@ -3,3 +3,21 @@ function createFollowing(fields) {
       .then(showResponse)
       .catch(showResponse);
 }
+
+function deleteFollowing(fields) {
+  fetch(`/api/following/${fields.following}`, {method: 'DELETE'})
+    .then(showResponse)
+    .catch(showResponse);
+}
+
+function viewAllFollowing(fields) {
+  fetch('/api/following/following')
+    .then(showResponse)
+    .catch(showResponse);
+}
+
+function viewAllFollowers(fields) {
+  fetch('/api/following/followers')
+    .then(showResponse)
+    .catch(showResponse);
+}
