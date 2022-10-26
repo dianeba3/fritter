@@ -23,6 +23,12 @@ function viewInteractionsByFreetId(fields) {
     .catch(showResponse);
 }
 
+function viewInteractionsByFreetIdAndType(fields) {
+  fetch(`/api/interaction?freetId=${fields.freetId}&interType=${fields.interType}`)
+    .then(showResponse)
+    .catch(showResponse);
+}
+
 function viewAllInteractions(fields) {
   fetch('/api/interaction')
     .then(showResponse)

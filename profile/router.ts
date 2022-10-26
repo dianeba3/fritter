@@ -76,7 +76,7 @@ router.post(
  * @return {UserResponse} - The updated user
  * @throws {403} - If user is not logged in
  * @throws {400} - If the bio/picture is empty or a stream of empty spaces
- * @throws {413} - If the bio/ is more than 140 characters long
+ * @throws {413} - If the bio is more than 140 characters long
  */
  router.put(
     '/',
@@ -86,7 +86,6 @@ router.post(
       profileValidator.isValidPic,
     ],
     async (req: Request, res: Response) => {
-      console.log("bio and pic");
       const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
       const profile = await ProfileCollection.updateOne(userId, req.body);
       res.status(200).json({

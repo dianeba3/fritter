@@ -13,13 +13,23 @@ const router = express.Router();
  *
  * @name GET /api/interaction
  *
- * @return {InteractionResponse[]} - A list of all the interactions sorted in descending
- *                      order by date modified
+ * @return {InteractionResponse[]} - A list of all the interactions
  */
 /**
  * Get interactions by freetID.
  *
  * @name GET /api/interaction?freetId=id
+ *
+ * @return {InteractionResponse[]} - An array of interactions created by freet with id, freetId
+ * @throws {400} - If freetId is not given
+ * @throws {403} - If the user is not logged in
+ * @throws {404} - If freet with freetId does not exist
+ *
+ */
+/**
+ * Get num of interactions with freetID and type.
+ *
+ * @name GET /api/interaction?freetId=id&interType=type
  *
  * @return {InteractionResponse[]} - An array of interactions created by freet with id, freetId
  * @throws {400} - If freetId is not given
@@ -38,6 +48,14 @@ const router = express.Router();
       const allFreets = await InteractionCollection.findAll();
       const response = allFreets.map(util.constructInteractionResponse);
       res.status(200).json(response);
+    },
+    [
+      userValidator.isUserLoggedIn,
+      interactionValidator.isFreetExistsQuery
+    ],
+    async (req: Request, res: Response) => {
+      const num = await InteractionCollection.findNumByType(req.query.freetId as string, req.query.interType as string)
+      res.status(200).json(num);
     },
     [
       userValidator.isUserLoggedIn,

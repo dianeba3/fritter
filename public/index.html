@@ -8,6 +8,7 @@
     <script src="/scripts/user.js"></script>
     <script src="/scripts/profile.js"></script>
     <script src="/scripts/interaction.js"></script>
+    <script src="/scripts/following.js"></script>
     <script src="/scripts/index.js"></script>
   </head>
 
@@ -20,6 +21,30 @@
       <section id="operations-container">
         <h2>Operations:</h2>
         <div class="scrollbox">
+          <form id="sign-in">
+            <h3>Sign In</h3>
+            <div>
+              <label for="username">Username:</label>
+              <input id="username" name="username" />
+            </div>
+            <div>
+              <label for="password">Password:</label>
+              <input id="password" name="password" />
+            </div>
+            <input type="submit" value="Sign In" />
+          </form>
+
+          <h2>Following:</h2>
+          <form id="create-following">
+            <h3>Create Following</h3>
+            <div>
+              <label for="following">User to follow:</label>
+              <input id="following" name="following"/>
+            </div>
+            <input type="submit" value="Follow" />
+          </form>
+
+
           <h2>Interaction:</h2>
           <form id="create-interaction">
             <h3>Create Interaction</h3>
@@ -74,19 +99,20 @@
             <input type="submit" value="View Interactions By FreetId" />
           </form>
 
-          <h2>User:</h2>
-          <form id="sign-in">
-            <h3>Sign In</h3>
+          <form id="view-interactions-by-freetId-and-type">
+            <h3>View Number of Interactions of Type for FreetId</h3>
             <div>
-              <label for="username">Username:</label>
-              <input id="username" name="username" />
+              <label for="freetId">FreetId:</label>
+              <input id="freetId" name="freetId" />
             </div>
             <div>
-              <label for="password">Password:</label>
-              <input id="password" name="password" />
+              <label for="interType">Type:</label>
+              <input id="interType" name="interType" />
             </div>
-            <input type="submit" value="Sign In" />
+            <input type="submit" value="View Number" />
           </form>
+
+          <h2>User:</h2>
 
           <form id="sign-out">
             <h3>Sign Out</h3>

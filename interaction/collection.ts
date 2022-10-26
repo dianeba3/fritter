@@ -59,7 +59,7 @@ import UserCollection from '../user/collection';
      */
     static async findAllByFreetId(freetId: string): Promise<Array<HydratedDocument<Interaction>>> {
         const freet = await FreetCollection.findOne(freetId);
-        return InteractionModel.find({freetId: freet._id}).populate('authorId');
+        return InteractionModel.find({freetId: freetId}).populate('authorId');
     }
 
     /**
@@ -73,23 +73,23 @@ import UserCollection from '../user/collection';
         return InteractionModel.find({authorId: user._id}).populate('authorId');
     }
 
-    // /**
-    //  * Get the number of interactions for a given interaction type for a freet with given freetId
-    //  *
-    //  * @param {string} freetId - The freetId of the interactions
-    //  * @param {string} type - the type of interaction to get count for
-    //  * @return {Promise<HydratedDocument<number>} - The number of all of the interactions of type
-    //  */
-    //  static async findNumOfType(freetId: string, type: string): Promise<HydratedDocument<number>> {
-    //   let count = 0;
-    //   const freets = await InteractionCollection.findAllByFreetId(freetId);
-    //   for (let i=0; i<freets.length; i++){
-    //     if (freets[i].type === type){
-    //       count ++;
-    //     }
-    //   }
-    //   return new Promise<HydratedDocument<count>>;
-    // }
+    /**
+     * Get the number of interactions for a given interaction type for a freet with given freetId
+     *
+     * @param {string} freetId - The freetId of the interactions
+     * @param {string} type - the type of interaction to get count for
+     * @return {Promise<number>} - The number of all of the interactions of type
+     */
+     static async findNumByType(freetId: string, type: string): Promise<number> {
+      let count = 0;
+      const freets = await InteractionCollection.findAllByFreetId(freetId);
+      for (let i=0; i<freets.length; i++){
+        if (freets[i].type === type){
+          count ++;
+        }
+      }
+      return count;
+    }
 
     /**
      * Update an interaction reply with the new content

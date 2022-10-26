@@ -28,6 +28,7 @@ function showResponse(response) {
 
 // Map form (by id) to the function that should be called on submit
 const formsAndHandlers = {
+  "create-following": createFollowing,
   "create-user": createUser,
   "create-profile": createProfile,
   "delete-profile": deleteProfile,
@@ -38,6 +39,7 @@ const formsAndHandlers = {
   "delete-interaction": deleteInteraction,
   "view-all-interactions": viewAllInteractions,
   "view-interactions-by-freetId": viewInteractionsByFreetId,
+  "view-interactions-by-freetId-and-type": viewInteractionsByFreetIdAndType,
   "delete-user": deleteUser,
   "change-username": changeUsername,
   "change-password": changePassword,

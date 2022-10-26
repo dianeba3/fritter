@@ -23,6 +23,24 @@ The project is structured as follows:
   - `model.ts` - contains definition of profile datatype
   - `router.ts` - contains backend profile routes
   - `util.ts` contains profile utility functions for transforming data returned to the client
+- `/interaction` contains files related to interaction concept
+  - `collection.ts` contains interaction collection class to wrap around MongoDB database
+  - `middleware.ts` contains interaction middleware
+  - `model.ts` - contains definition of interaction datatype
+  - `router.ts` - contains backend interaction routes
+  - `util.ts` contains interaction utility functions for transforming data returned to the client
+- `/following` contains files related to following concept
+  - `collection.ts` contains following collection class to wrap around MongoDB database
+  - `middleware.ts` contains following middleware
+  - `model.ts` - contains definition of following datatype
+  - `router.ts` - contains backend following routes
+  - `util.ts` contains following utility functions for transforming data returned to the client
+- `/follower_barrier` contains files related to follower barrier concept
+  - `collection.ts` contains follower barrier collection class to wrap around MongoDB database
+  - `middleware.ts` contains follower barrier middleware
+  - `model.ts` - contains definition of follower barrier datatype
+  - `router.ts` - contains backend follower barrier routes
+  - `util.ts` contains follower barrier utility functions for transforming data returned to the client
 - `/public` contains the code for the frontend (HTML/CSS/browser JS)
 
 
@@ -37,7 +55,7 @@ The following api routes have already been implemented for you :
 - ``` GET /api/freets ``` - Get all the freets
     - Returns
         - An array of all freets sorted in descending order by date modified
-- ``` GET /api/freets?author=USERNAME ``` - Get freets by author
+- ``` GET /api/freets?authorId=id ``` - Get freets by authorId
     - Returns 
         - An array of freets created by user with username `author`
     - Throws 
@@ -127,39 +145,39 @@ The following api routes have already been implemented for you :
         - `bio`  _{string}_ - The user's profile bio 
     - Returns
         - A success message
-        - An object with the created user's details
+        - A profile with the created user's details
     - Throws
         - `403` if the user is not logged in 
         - `409` if username is already in use
-- ```PUT /api/profile/bio/:userId?``` - Update profile bio for given user profile
-    - Body
-        - `newBio` _{string}_ - The new bio for the profile
+        - `413` if the bio is more than 140 characters long
+- ```PUT /api/profile``` - Update profile bio for given user profile
+    - Body _(no need to add fields that are not being changed)_
+        - `bio` _{string}_ - The user's new profile bio
+        - `picture` _{string}_ - The user's new profile picture
     - Returns
         - A success message
         - An object with the updated profile
     - Throws 
         - `403` if the user is not logged in
-        - `404` if `userId` is not a recognized username of any user
-        - `400` if the new bio content is empty or a stream of empty spaces
+        - `400` if the new bio/picture content is empty or a stream of empty spaces
         - `413` if the new bio content is more than 140 characters long
-- ```PUT /api/profile/picture/:userId?``` - Update profile picture
-    - Body
-        - `newPic` _{string}_ - The new pic string for the profile
-    - Returns
-        - A success message
-        - An object with the updated profile
-    - Throws 
-        - `403` if the user is not logged in
-        - `404` if `userId` is not a recognized username of any user
-        - `404` if `newPic` is not found in the database
-        - `400` if the new picture content is empty or a stream of empty spaces
-- ```DELETE /api/profile/:userId?``` - Delete user profile
+- ```DELETE /api/profile``` - Delete user profile
     - Returns
         - A success message
     - Throws
         - `403` if the user is not logged in
 
 # Freet Interactions
+- ```GET /api/interaction``` - Get all the interactions
+    - Returns
+        - An array of all the interactions in the database
+- ```GET /api/interaction?freetId=id``` - Get interactions by freetID.
+    - Returns 
+        - An array of interactions created by freet with id, `freetId`
+    - Throws 
+        - `400` If freetId is not given
+        - `403` If the user is not logged in
+        - `404` If freet with freetId does not exist
 - ```DELETE /api/freet_interaction/:interactionId``` - Delete an interaction
     - Returns
         - A success message
@@ -174,26 +192,26 @@ The following api routes have already been implemented for you :
         - `content`  _{string}_ - If of type 'reply' then the content otherwise empty 
     - Returns
         - A success message
-        - An object with the created freet interaction
+        - An object with the created interaction
     - Throws
         - `403` if the user is not logged in
         - `404` if `authorId` is not a recognized username of any user
         - `404` if `freetId` is invalid
         - `404` if `type` is not a recognized type of interaction
         - `413` if the new freet interaction content is more than 140 characters long     
-- ```PUT /api/interaction/:interactionId? ``` - Update an existing freet interaction
+- ```PUT /api/interaction/:interactionId? ``` - Update an existing interaction
     - Body
-        - `content` _{string}_ - The new content of the freet interaction
+        - `content` _{string}_ - The new content of the reply interaction
     - Returns
         - A success message
-        - An object with the updated freet
+        - An object with the updated interaction
     - Throws 
         - `403` if the user is not logged in
-        - `404` if the freet_interactionId is invalid
+        - `404` if the interactionId is invalid
         - `403` if the user is not the author of the freet
         - `400` if the new freet interaction content is empty or a stream of empty spaces
         - `413` if the new freet interaction content is more than 140 characters long
-
+        
 # Following
 - ```DELETE /api/following/:followingId``` - Delete a following
     - Returns
@@ -244,8 +262,6 @@ The following api routes have already been implemented for you :
         - `400` if the new passcode is empty or a stream of empty spaces
         - `413` if the new passcode is more than 10 characters long
 
-# Memories
-not sure yet
 
 
 

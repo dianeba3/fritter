@@ -1,7 +1,11 @@
 import type { HydratedDocument, Types } from "mongoose";
 import type { Profile } from "./model";
+import type { Freet } from "../freet/model";
 import ProfileModel from "./model";
 import UserCollection from "../user/collection";
+import InteractionCollection from "../interaction/collection";
+import InteractionModel from "../interaction/model";
+
 
 /**
  * This file contains a class with functionality to interact with profiles stored
@@ -32,19 +36,26 @@ class ProfileCollection {
     const author = await UserCollection.findOneByUserId(userId);
     return ProfileModel.findOne({ userId: author._id }).populate("userId");
   }
-
-
-  // need to complete after interactions are done
+  
   // /**
-  //  * Find all liked Freets by a user by userId (case insensitive).
+  //  * Get a list of freets with the given interaction type by the userId
   //  *
-  //  * @param {string} userId - The userId of the user to find liked freets by
-  //  * @return {Promise<HydratedDocument<User>> | Promise<null>} - The user with the given userId, if any
+  //  * @param {string} userId - The freetId of the interactions
+  //  * @param {string} type - the type of interaction to get count for
+  //  * @return {Promise<HydratedDocument<Freet>[]>} - The number of all of the interactions of type
   //  */
-  //  static async findOneByuserId(userId: string): Promise<HydratedDocument<User>> {
-  //   return UserModel.findOne({userId: new RegExp(`^${userId.trim()}$`, 'i')});
-  // }
+  //   static async findAllByType(userId: string, type: string): Promise<HydratedDocument<Freet>[]> {
+  //   const interactions = await InteractionModel.find({
+  //     userId: userId,
+  //     type: type
+  //   }).populate('authorId');
 
+  //   let freets = new Freet[];
+  //   for (let i=0; i<interactions.length; i++){
+      
+  //   }
+  //   return interactions;
+  // }
 
   /**
    * Update a profile with the new bio or picture
